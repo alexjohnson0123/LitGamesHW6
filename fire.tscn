@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://dn1l1mu41x0fy"]
+
+[ext_resource type="PackedScene" uid="uid://jr5cme7rdflk" path="res://Bonfire.glb" id="1_xj2xq"]
+[ext_resource type="Texture2D" uid="uid://bjj6hgrvam4b5" path="res://firev4.png" id="2_g3cc3"]
+
+[sub_resource type="Gradient" id="Gradient_2h6pm"]
+colors = PackedColorArray(1, 0.294118, 0, 1, 1, 0.137255, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vec87"]
+gradient = SubResource("Gradient_2h6pm")
+
+[sub_resource type="Curve" id="Curve_n00yr"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.154206, 0.912088), 1.61256, 1.61256, 0, 0, Vector2(0.728972, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_bwx75"]
+curve = SubResource("Curve_n00yr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jlnps"]
+angle_max = 360.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 0.5
+initial_velocity_max = 0.5
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_bwx75")
+color_ramp = SubResource("GradientTexture1D_vec87")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qpyv8"]
+transparency = 1
+blend_mode = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_g3cc3")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_1ygw7"]
+lightmap_size_hint = Vector2i(7, 7)
+material = SubResource("StandardMaterial3D_qpyv8")
+size = Vector2(0.5, 0.5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Root Scene" parent="." instance=ExtResource("1_xj2xq")]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036314, 0)
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_jlnps")
+draw_pass_1 = SubResource("QuadMesh_1ygw7")

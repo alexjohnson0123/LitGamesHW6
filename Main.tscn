@@ -1,0 +1,80 @@
+[gd_scene load_steps=13 format=3 uid="uid://ubpifqs71wpw"]
+
+[ext_resource type="PackedScene" uid="uid://jr5cme7rdflk" path="res://Bonfire.glb" id="1_4j1iw"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="2_3wjwe"]
+[ext_resource type="Resource" path="res://TerrainData/data.hterrain" id="3_3whib"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="4_oc2u0"]
+[ext_resource type="Texture2D" uid="uid://wr4wyhuhwjmf" path="res://Main_slot0_albedo_bump.png" id="5_6o7iv"]
+[ext_resource type="Texture2D" uid="uid://bh6cuyt8rdswv" path="res://Main_slot0_normal_roughness.png" id="6_k0ga2"]
+[ext_resource type="PackedScene" uid="uid://dn1l1mu41x0fy" path="res://fire.tscn" id="7_8dt0q"]
+[ext_resource type="PackedScene" uid="uid://hb4tpl7qxckt" path="res://low-poly_tent.glb" id="8_xgtra"]
+
+[sub_resource type="Resource" id="Resource_xtymu"]
+script = ExtResource("4_oc2u0")
+mode = 0
+textures = [[ExtResource("5_6o7iv")], [ExtResource("6_k0ga2")]]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dm8wm"]
+sky_top_color = Color(0, 0.00392157, 0.0627451, 1)
+sky_horizon_color = Color(0.0941176, 0.109804, 0.317647, 1)
+
+[sub_resource type="Sky" id="Sky_ggk6s"]
+sky_material = SubResource("ProceduralSkyMaterial_dm8wm")
+
+[sub_resource type="Environment" id="Environment_v1nvs"]
+background_mode = 2
+sky = SubResource("Sky_ggk6s")
+ambient_light_source = 3
+ambient_light_color = Color(0.584314, 0.384314, 0.988235, 1)
+ambient_light_energy = 0.12
+reflected_light_source = 1
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Root Scene" parent="." instance=ExtResource("1_4j1iw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.96407, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.735994, -0.0228968, -0.6766, -0.0126679, 0.999719, -0.0200515, 0.676869, -0.00618673, -0.736077, 28.6574, -5.79279, -171.807)
+current = true
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("2_3wjwe")
+centered = true
+_terrain_data = ExtResource("3_3whib")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_xtymu")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v1nvs")
+
+[node name="fire" parent="." instance=ExtResource("7_8dt0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.8615, -6.08862, -171.155)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="fire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.045, 0)
+light_color = Color(0.94902, 0.678431, 0, 1)
+shadow_enabled = true
+shadow_opacity = 0.15
+shadow_blur = 10.0
+distance_fade_begin = 0.0
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("8_xgtra")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.1055, -6.06503, -169.334)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+light_color = Color(0.294118, 0.294118, 0.294118, 1)
+light_energy = 0.299
+light_indirect_energy = 0.469
